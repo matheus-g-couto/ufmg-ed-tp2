@@ -15,11 +15,14 @@ int main(int argc, char **argv) {
     }
     std::cout << std::endl;
 
-    quicksortRec(c, 10);
+    // quicksortRec(c, 10);
+    // quicksortSelect(c, 10);
+    quicksortMed(c, 10, 3);
 
     for (int i = 0; i < 10; i++) {
         std::cout << c[i].id << " ";
     }
     std::cout << std::endl;
+
     return 0;
 }
