@@ -33,7 +33,7 @@ ASSETS_OUTPUT_FOLDER = ./assets/out/
 
 # all sources, objs, and header files
 MAIN = main
-TARGET = run.out
+TARGET = quicksort
 SRC = $(wildcard $(SRC_FOLDER)*.cpp)
 OBJ = $(patsubst $(SRC_FOLDER)%.cpp, $(OBJ_FOLDER)%.o, $(SRC))
 
