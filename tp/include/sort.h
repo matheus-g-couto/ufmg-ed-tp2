@@ -7,5 +7,7 @@ struct Item {
 void quicksortRec(Item *regs, int size);
 void quicksortMed(Item *regs, int size, int n);
 void quicksortSelect(Item *regs, int size, int m);
-void quicksortNRec();
-void quicksortSmartStack();
+void quicksortNRec(Item *regs, int size);
+void quicksortSmartStack(Item *regs, int size);
+void mergesort();
+void heapsort();
