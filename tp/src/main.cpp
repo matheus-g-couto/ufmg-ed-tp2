@@ -20,7 +20,9 @@ int main(int argc, char **argv) {
     // quicksortSelect(c, size, 10);
     // quicksortMed(c, 10, 3);
     // quicksortNRec(c, size);
-    quicksortSmartStack(c, size);
+    // quicksortSmartStack(c, size);
+    // mergesort(c, size);
+    heapsort(c, size);
 
     for (int i = 0; i < size; i++) {
         std::cout << c[i].id << " ";

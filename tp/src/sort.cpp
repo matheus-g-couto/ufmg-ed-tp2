@@ -183,3 +183,84 @@ void quicksortSmartStack(Item *regs, int size) {
         }
     } while (p->tam > 0);
 }
+
+// MergeSort from: https://www.programiz.com/dsa/merge-sort
+void MergesortMerge(Item *regs, int left, int mid, int right) {
+    int n1 = mid - left + 1, n2 = right - mid;
+    Item A[n1], B[n2];
+
+    for (int i = 0; i < n1; i++)
+        A[i] = regs[left + i];
+    for (int j = 0; j < n2; j++)
+        B[j] = regs[mid + 1 + j];
+
+    // mantém controle do index dos subarrays e array principal
+    int i = 0, j = 0, k = left;
+
+    // coloca os elementos dos subarrays no vetor principal
+    while (i < n1 && j < n2) {
+        if (A[i].id <= B[j].id) {
+            regs[k] = A[i];
+            i++;
+        } else {
+            regs[k] = B[j];
+            j++;
+        }
+        k++;
+    }
+
+    // adiciona os elementos faltantes após acabarem os elementos de um dos
+    // vetores
+    while (i < n1) {
+        regs[k] = A[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        regs[k] = B[j];
+        j++;
+        k++;
+    }
+}
+
+void MergesortDivide(Item *regs, int left, int right) {
+    if (left >= right)
+        return;
+
+    int mid = left + (right - left) / 2;
+    MergesortDivide(regs, left, mid);
+    MergesortDivide(regs, mid + 1, right);
+    MergesortMerge(regs, left, mid, right);
+}
+
+void mergesort(Item *regs, int size) { MergesortDivide(regs, 0, size - 1); }
+
+// HeapSort from: https://www.geeksforgeeks.org/cpp-program-for-heap-sort/
+void HeapMake(Item *regs, int size, int idx) {
+    int largest = idx; // idx do maior elemento inicializado como a raiz do heap
+    int left = 2 * idx + 1, right = 2 * idx + 2;
+
+    if (left < size && regs[left].id > regs[largest].id)
+        largest = left;
+
+    if (right < size && regs[right].id > regs[largest].id)
+        largest = right;
+
+    if (largest != idx) {
+        Swap(&regs[idx], &regs[largest]);
+
+        HeapMake(regs, size, largest);
+    }
+}
+
+void heapsort(Item *regs, int size) {
+    // constrói o heap
+    for (int i = size / 2 - 1; i >= 0; i--)
+        HeapMake(regs, size, i);
+
+    for (int i = size - 1; i >= 0; i--) {
+        Swap(&regs[0], &regs[i]);
+        HeapMake(regs, i, 0);
+    }
+}
