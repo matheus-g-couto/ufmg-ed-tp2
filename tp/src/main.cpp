@@ -171,6 +171,7 @@ void sort(Item *regs, int size, const Flags f) {
 }
 
 void printResultsHeader(const Flags f, std::ofstream &output) {
+    output << "Versão " << f.type << ": ";
     switch (f.type) {
         case 2:
             output << tipos_sort[f.type - 1] << " - Mediana de " << f.median_k << " elementos" << std::endl;
@@ -186,8 +187,8 @@ void printResultsHeader(const Flags f, std::ofstream &output) {
 }
 
 void printResults(const int64_t exec_time, const Flags f, const int size_input, std::ofstream &output) {
-    output << size_input << " registros | Tempo de execução médio: " << exec_time << "ms | " << comparisons_count
-           << " comparações | " << copies_count << " cópias" << std::endl;
+    output << size_input << " registros | Tempo de execução médio: " << exec_time << "ms | " << (int)(comparisons_count / 5)
+           << " comparações | " << (int)(copies_count / 5) << " cópias" << std::endl;
 
     comparisons_count = 0;
     copies_count = 0;
