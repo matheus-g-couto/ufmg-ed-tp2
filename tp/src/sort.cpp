@@ -1,6 +1,10 @@
 #include "sort.h"
+
 #include <cstdlib>
 #include <iostream>
+
+extern int comparisons_count;
+extern int copies_count;
 
 void Swap(Item *a, Item *b) {
     Item c;
@@ -14,10 +18,8 @@ void Partition(int left, int right, int *i, int *j, Item *regs, Item pivot) {
     *j = right;
 
     do {
-        while (pivot.id > regs[*i].id)
-            (*i)++;
-        while (pivot.id < regs[*j].id)
-            (*j)--;
+        while (pivot.id > regs[*i].id) (*i)++;
+        while (pivot.id < regs[*j].id) (*j)--;
 
         if (*i <= *j) {
             Swap(&regs[*i], &regs[*j]);
@@ -30,10 +32,8 @@ void Partition(int left, int right, int *i, int *j, Item *regs, Item pivot) {
 void Order(int left, int right, Item *regs) {
     int i, j;
     Partition(left, right, &i, &j, regs, regs[(left + right) / 2]);
-    if (left < j)
-        Order(left, j, regs);
-    if (i < right)
-        Order(i, right, regs);
+    if (left < j) Order(left, j, regs);
+    if (i < right) Order(i, right, regs);
 }
 
 void quicksortRec(Item *regs, int size) { Order(0, size - 1, regs); }
@@ -42,8 +42,7 @@ void selectionSort(int left, int size, Item *regs) {
     for (int i = left; i < size; i++) {
         int smaller = i;
         for (int j = i + 1; j < size; j++) {
-            if (regs[j].id < regs[smaller].id)
-                smaller = j;
+            if (regs[j].id < regs[smaller].id) smaller = j;
         }
 
         Swap(&regs[i], &regs[smaller]);
@@ -63,15 +62,11 @@ Item MedianPivot(int left, int right, int k, Item *regs) {
 void MedianOrder(int left, int right, int k, Item *regs) {
     int i, j;
     Partition(left, right, &i, &j, regs, MedianPivot(left, right, k, regs));
-    if (left < j)
-        Order(left, j, regs);
-    if (i < right)
-        Order(i, right, regs);
+    if (left < j) Order(left, j, regs);
+    if (i < right) Order(i, right, regs);
 }
 
-void quicksortMed(Item *regs, int size, int k) {
-    MedianOrder(0, size - 1, k, regs);
-}
+void quicksortMed(Item *regs, int size, int k) { MedianOrder(0, size - 1, k, regs); }
 
 void SelectOrder(int left, int right, int m, Item *regs) {
     int i, j;
@@ -82,15 +77,11 @@ void SelectOrder(int left, int right, int m, Item *regs) {
     }
 
     Partition(left, right, &i, &j, regs, regs[(left + right) / 2]);
-    if (left < j)
-        SelectOrder(left, j, m, regs);
-    if (i < right)
-        SelectOrder(i, right, m, regs);
+    if (left < j) SelectOrder(left, j, m, regs);
+    if (i < right) SelectOrder(i, right, m, regs);
 }
 
-void quicksortSelect(Item *regs, int size, int m) {
-    SelectOrder(0, size - 1, m, regs);
-}
+void quicksortSelect(Item *regs, int size, int m) { SelectOrder(0, size - 1, m, regs); }
 
 void quicksortNRec(Item *regs, int size) {
     // pilha que armazena as partições a serem ordenadas
@@ -142,8 +133,7 @@ struct Pilha {
     }
 
     ItemPos desempilha() {
-        if (tam == 0)
-            throw("Pilha vazia!");
+        if (tam == 0) throw("Pilha vazia!");
         No *aux = topo;
         ItemPos item = topo->it;
         topo = topo->prox;
@@ -189,10 +179,8 @@ void MergesortMerge(Item *regs, int left, int mid, int right) {
     int n1 = mid - left + 1, n2 = right - mid;
     Item A[n1], B[n2];
 
-    for (int i = 0; i < n1; i++)
-        A[i] = regs[left + i];
-    for (int j = 0; j < n2; j++)
-        B[j] = regs[mid + 1 + j];
+    for (int i = 0; i < n1; i++) A[i] = regs[left + i];
+    for (int j = 0; j < n2; j++) B[j] = regs[mid + 1 + j];
 
     // mantém controle do index dos subarrays e array principal
     int i = 0, j = 0, k = left;
@@ -225,8 +213,7 @@ void MergesortMerge(Item *regs, int left, int mid, int right) {
 }
 
 void MergesortDivide(Item *regs, int left, int right) {
-    if (left >= right)
-        return;
+    if (left >= right) return;
 
     int mid = left + (right - left) / 2;
     MergesortDivide(regs, left, mid);
@@ -238,14 +225,12 @@ void mergesort(Item *regs, int size) { MergesortDivide(regs, 0, size - 1); }
 
 // HeapSort from: https://www.geeksforgeeks.org/cpp-program-for-heap-sort/
 void HeapMake(Item *regs, int size, int idx) {
-    int largest = idx; // idx do maior elemento inicializado como a raiz do heap
+    int largest = idx;  // idx do maior elemento inicializado como a raiz do heap
     int left = 2 * idx + 1, right = 2 * idx + 2;
 
-    if (left < size && regs[left].id > regs[largest].id)
-        largest = left;
+    if (left < size && regs[left].id > regs[largest].id) largest = left;
 
-    if (right < size && regs[right].id > regs[largest].id)
-        largest = right;
+    if (right < size && regs[right].id > regs[largest].id) largest = right;
 
     if (largest != idx) {
         Swap(&regs[idx], &regs[largest]);
@@ -256,8 +241,7 @@ void HeapMake(Item *regs, int size, int idx) {
 
 void heapsort(Item *regs, int size) {
     // constrói o heap
-    for (int i = size / 2 - 1; i >= 0; i--)
-        HeapMake(regs, size, i);
+    for (int i = size / 2 - 1; i >= 0; i--) HeapMake(regs, size, i);
 
     for (int i = size - 1; i >= 0; i--) {
         Swap(&regs[0], &regs[i]);

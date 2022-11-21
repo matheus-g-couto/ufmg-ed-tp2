@@ -1,6 +1,11 @@
+#ifndef SORT_H
+#define SORT_H
+
+#include <string>
+
 struct Item {
     int id;
-    char str[15][201];
+    std::string str[15];
     double num[10];
 };
 
@@ -11,3 +16,5 @@ void quicksortNRec(Item *regs, int size);
 void quicksortSmartStack(Item *regs, int size);
 void mergesort(Item *regs, int size);
 void heapsort(Item *regs, int size);
+
+#endif
