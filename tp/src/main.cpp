@@ -117,6 +117,7 @@ void parse_args(int argc, char **argv, Flags *f) {
 }
 
 // fonte: https://codereview.stackexchange.com/questions/29198/random-string-generator-in-c
+// gera uma string aleatória
 std::string generate_random_string() {
     const std::string charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     std::string str;
@@ -130,6 +131,7 @@ std::string generate_random_string() {
     return str;
 }
 
+// preenche o vetor de registros
 void fillItemArray(int n, Item *regs) {
     for (int i = 0; i < n; i++) {
         regs[i].id = rand() % n;
@@ -144,6 +146,7 @@ void fillItemArray(int n, Item *regs) {
     }
 }
 
+// escolhe o algoritmo de ordenação de acordo com as flags
 void sort(Item *regs, int size, const Flags f) {
     switch (f.type) {
         case 1:
@@ -170,6 +173,7 @@ void sort(Item *regs, int size, const Flags f) {
     }
 }
 
+// imprime o cabeçalho dos testes
 void printResultsHeader(const Flags f, std::ofstream &output) {
     output << "Versão " << f.type << ": ";
     switch (f.type) {
@@ -186,6 +190,7 @@ void printResultsHeader(const Flags f, std::ofstream &output) {
     }
 }
 
+// imprime os resultados dos testes
 void printResults(const int64_t exec_time, const Flags f, const int size_input, std::ofstream &output) {
     output << size_input << " registros | Tempo de execução médio: " << exec_time << "ms | " << (int)(comparisons_count / 5)
            << " comparações | " << (int)(copies_count / 5) << " cópias" << std::endl;
@@ -194,6 +199,7 @@ void printResults(const int64_t exec_time, const Flags f, const int size_input, 
     copies_count = 0;
 }
 
+// calcula a média dos tempos de execução
 int64_t calcMedia(const int64_t *exec_time, const int n_tests) {
     int64_t sum = 0;
     for (int i = 0; i < n_tests; i++) sum += exec_time[i];
