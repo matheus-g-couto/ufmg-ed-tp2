@@ -25,10 +25,13 @@ void Partition(int left, int right, int *i, int *j, Item *regs, Item pivot) {
             (*i)++;
             comparisons_count++;
         }
+        comparisons_count++;
+
         while (pivot.id < regs[*j].id) {
             (*j)--;
             comparisons_count++;
         }
+        comparisons_count++;
 
         if (*i <= *j) {
             Swap(&regs[*i], &regs[*j]);
@@ -56,15 +59,17 @@ void Order(int left, int right, Item *regs) {
 void quicksortRec(Item *regs, int size) { Order(0, size - 1, regs); }
 
 void selectionSort(int left, int size, Item *regs) {
+    int smaller;
     for (int i = left; i < size; i++) {
-        int smaller = i;
+        smaller = i;
         for (int j = i + 1; j < size; j++) {
             if (regs[j].id < regs[smaller].id) smaller = j;
 
-            comparisons_count++;
+            comparisons_count += 2;
         }
 
         Swap(&regs[i], &regs[smaller]);
+        comparisons_count++;
     }
 }
 
@@ -73,6 +78,7 @@ Item MedianPivot(int left, int right, int k, Item *regs) {
     for (int i = 0; i < k; i++) {
         pivots[i] = regs[rand() % (right - left) + left];
         copies_count++;
+        comparisons_count++;
     }
 
     selectionSort(0, k, pivots);
@@ -141,6 +147,7 @@ void quicksortNRec(Item *regs, int size) {
         }
         comparisons_count++;
     }
+    comparisons_count++;
 }
 
 struct ItemPos {
@@ -203,6 +210,7 @@ void quicksortSmartStack(Item *regs, int size) {
 
                 copies_count++;
             }
+            comparisons_count++;
         } else {
             item = p->desempilha();
             right = item.right;
@@ -218,16 +226,20 @@ void quicksortSmartStack(Item *regs, int size) {
 // MergeSort from: https://www.programiz.com/dsa/merge-sort
 void MergesortMerge(Item *regs, int left, int mid, int right) {
     int n1 = mid - left + 1, n2 = right - mid;
-    Item A[n1], B[n2];
+    Item *A = new Item[n1], *B = new Item[n2];
 
     for (int i = 0; i < n1; i++) {
         A[i] = regs[left + i];
         copies_count++;
+        comparisons_count++;
     }
+    comparisons_count++;
     for (int j = 0; j < n2; j++) {
         B[j] = regs[mid + 1 + j];
         copies_count++;
+        comparisons_count++;
     }
+    comparisons_count++;
 
     // mantém controle do index dos subarrays e array principal
     int i = 0, j = 0, k = left;
@@ -247,6 +259,7 @@ void MergesortMerge(Item *regs, int left, int mid, int right) {
 
         comparisons_count += 2;
     }
+    comparisons_count++;
 
     // adiciona os elementos faltantes após acabarem os elementos de um dos vetores
     while (i < n1) {
@@ -257,6 +270,7 @@ void MergesortMerge(Item *regs, int left, int mid, int right) {
         copies_count++;
         comparisons_count++;
     }
+    comparisons_count++;
 
     while (j < n2) {
         regs[k] = B[j];
@@ -266,6 +280,10 @@ void MergesortMerge(Item *regs, int left, int mid, int right) {
         copies_count++;
         comparisons_count++;
     }
+    comparisons_count++;
+
+    delete[] A;
+    delete[] B;
 }
 
 void MergesortDivide(Item *regs, int left, int right) {
@@ -300,10 +318,16 @@ void HeapMake(Item *regs, int size, int idx) {
 
 void heapsort(Item *regs, int size) {
     // constrói o heap
-    for (int i = size / 2 - 1; i >= 0; i--) HeapMake(regs, size, i);
+    for (int i = size / 2 - 1; i >= 0; i--) {
+        HeapMake(regs, size, i);
+        comparisons_count++;
+    }
+    comparisons_count++;
 
     for (int i = size - 1; i >= 0; i--) {
         Swap(&regs[0], &regs[i]);
         HeapMake(regs, i, 0);
+        comparisons_count++;
     }
+    comparisons_count++;
 }

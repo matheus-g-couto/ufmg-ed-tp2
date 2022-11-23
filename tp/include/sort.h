@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "memlog.h"
+
 struct Item {
     int id;
     std::string str[15];

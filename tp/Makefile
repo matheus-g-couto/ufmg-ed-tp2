@@ -43,5 +43,23 @@ $(OBJ_FOLDER)%.o: $(SRC_FOLDER)%.cpp
 all: $(OBJ)
 	$(CC) $(CXXFLAGS) -o $(BIN_FOLDER)$(TARGET) $(OBJ)
 
+use:
+#	$(BIN_FOLDER)$(TARGET) -v 1 -s 100 -i ./assets/entrada_padrao.txt -o $(BIN_FOLDER)saida1.txt
+
+#	$(BIN_FOLDER)$(TARGET) -v 2 -s 100 -k 3 -i ./assets/entrada_padrao.txt -o $(BIN_FOLDER)saida2_3.txt
+#	$(BIN_FOLDER)$(TARGET) -v 2 -s 100 -k 5 -i ./assets/entrada_padrao.txt -o $(BIN_FOLDER)saida2_5.txt
+#	$(BIN_FOLDER)$(TARGET) -v 2 -s 100 -k 7 -i ./assets/entrada_padrao.txt -o $(BIN_FOLDER)saida2_7.txt	
+
+	$(BIN_FOLDER)$(TARGET) -v 3 -s 100 -m 10 -i ./assets/entrada_padrao.txt -o $(BIN_FOLDER)saida3_10.txt
+	$(BIN_FOLDER)$(TARGET) -v 3 -s 100 -m 100 -i ./assets/entrada_padrao.txt -o $(BIN_FOLDER)saida3_100.txt
+
+	$(BIN_FOLDER)$(TARGET) -v 4 -s 100 -i ./assets/entrada_padrao.txt -o $(BIN_FOLDER)saida4.txt
+
+	$(BIN_FOLDER)$(TARGET) -v 5 -s 100 -i ./assets/entrada_padrao.txt -o $(BIN_FOLDER)saida5.txt
+
+	$(BIN_FOLDER)$(TARGET) -v 6 -s 100 -i ./assets/entrada_padrao.txt -o $(BIN_FOLDER)saida6.txt
+
+	$(BIN_FOLDER)$(TARGET) -v 7 -s 100 -i ./assets/entrada_padrao.txt -o $(BIN_FOLDER)saida7.txt
+
 clean:
 	@rm -rf $(OBJ_FOLDER)* $(BIN_FOLDER)* $(ASSETS_OUTPUT_FOLDER)*

@@ -34,7 +34,7 @@ struct Flags {
     int select_stop;
 
     Flags()
-        : input_file("assets/in/entrada_padrao.txt"),
+        : input_file("assets/entrada_padrao.txt"),
           output_file("bin/saida.txt"),
           log_file("bin/log.out"),
           regmem(false),
@@ -48,7 +48,7 @@ void parse_args(int argc, char **argv, Flags *f) {
     int opt;
     bool has_in = false, has_out = false, has_log = false, has_seed = false, has_type = false, has_median_k = false,
          has_select_stop = false;
-    while ((opt = getopt(argc, argv, "i:o:p:l:v:s:k:m")) != -1) {
+    while ((opt = getopt(argc, argv, "i:o:p:lv:s:k:m:")) != -1) {
         switch (opt) {
             case 'i':
                 // recebeu arquivo de entrada
@@ -106,14 +106,14 @@ void parse_args(int argc, char **argv, Flags *f) {
         }
     }
 
-    avisoAssert(has_in, "Usando o arquivo de entrada padrao: assets/in/entrada_padrao.txt");
+    avisoAssert(has_in, "Usando o arquivo de entrada padrao: assets/entrada_padrao.txt");
     avisoAssert(has_out, "Usando o arquivo de saida padrao: bin/saida.txt");
     avisoAssert(has_log, "Usando o arquivo de log padrao: bin/log.out");
     avisoAssert(has_type, "Realizando o quicksort recursivo padrao (opcao 1)");
     avisoAssert(has_seed, "Utilizando seed padrao (77)");
     avisoAssert(!(f->type == 2 && !has_median_k), "Realizando o quicksort com mediana de 3 elementos");
     avisoAssert(!(f->type == 3 && !has_select_stop), "Utilizando o selection sort a partir de particoes de 10 elementos");
-    avisoAssert(f->type <= 7 && f->type > 0, "Opcao de ordenacao nao reconhecida");
+    erroAssert(f->type <= 7 && f->type > 0, "Opcao de ordenacao nao reconhecida");
 }
 
 // fonte: https://codereview.stackexchange.com/questions/29198/random-string-generator-in-c
@@ -235,6 +235,8 @@ int main(int argc, char **argv) {
             int64_t exec_time[tests_per_size];
 
             for (int j = 0; j < tests_per_size; j++) {
+                defineFaseMemLog(i * num_in + j);
+
                 // define a seed aleatória
                 srand(f->random_seed + j);
 
